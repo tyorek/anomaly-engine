@@ -1,0 +1,293 @@
+{
+  "_doc": "anomaly-engine config. Edit, no restart needed (read every run). See README.md.",
+  "timezone": "America/Chicago",
+  "burn_in_end": "2026-12-07T00:00:00-06:00",
+  "syslog_root": "/srv/syslog",
+  "flow_csv_root": "/srv/syslog/flows-csv",
+  "devices": [
+    "rb5009",
+    "ag01",
+    "ag02",
+    "ag03",
+    "fw-edge",
+    "primenodetls",
+    "secnodetls",
+    "tertnodetls",
+    "buauth",
+    "bunode1",
+    "bunode2"
+  ],
+  "query_logs": [
+    "primenodetls",
+    "buauth"
+  ],
+  "feed_silence_minutes": 30,
+  "dedupe_hours": 6,
+  "nets": {
+    "dmz": [
+      "10.20.0.0/25",
+      "2001:db8:4a00:1f01::/64",
+      "fd12:3456:789a:10::/64"
+    ],
+    "internal": [
+      "10.0.0.0/8",
+      "172.16.0.0/12",
+      "192.168.0.0/16",
+      "fd12:3456:789a::/48",
+      "2001:db8:4a00:1f80::/57"
+    ],
+    "iot": [
+      "192.168.25.0/24"
+    ],
+    "monitoring_hosts": [
+      "192.168.99.3",
+      "192.168.99.11"
+    ]
+  },
+  "dmz_proxies": {
+    "10.20.0.2": "npm (pibox)",
+    "10.20.0.7": "caddy"
+  },
+  "_router_doc": "RB5009 addresses a DMZ host should never reach except caddy -> 192.168.5.1:80. Confirmed ones only; add the other bridge gateways.",
+  "router_addresses": [
+    "192.168.5.1",
+    "192.168.99.1",
+    "172.16.255.2"
+  ],
+  "_allow_doc": "DMZ-initiated connections to internal hosts that fw-edge rules 1030-1055 permit (exported 2026-11-23).",
+  "dmz_internal_allow": [
+    {
+      "src": [
+        "10.20.0.2"
+      ],
+      "dst": [
+        "192.168.20.2"
+      ],
+      "ports": [
+        11000
+      ],
+      "proto": "TCP",
+      "rule": 1030
+    },
+    {
+      "src": [
+        "10.20.0.2"
+      ],
+      "dst": [
+        "192.168.99.8"
+      ],
+      "ports": [
+        3000,
+        8090
+      ],
+      "proto": "TCP",
+      "rule": "1031-1032"
+    },
+    {
+      "src": [
+        "10.20.0.2"
+      ],
+      "dst": [
+        "192.168.99.3"
+      ],
+      "ports": [
+        8099
+      ],
+      "proto": "TCP",
+      "rule": 1033
+    },
+    {
+      "src": [
+        "10.20.0.2"
+      ],
+      "dst": [
+        "192.168.15.9"
+      ],
+      "ports": [
+        53443
+      ],
+      "proto": "TCP",
+      "rule": 1034
+    },
+    {
+      "src": [
+        "10.20.0.2"
+      ],
+      "dst": [
+        "192.168.5.12"
+      ],
+      "ports": [
+        443
+      ],
+      "proto": "TCP",
+      "rule": 1035
+    },
+    {
+      "src": [
+        "10.20.0.2"
+      ],
+      "dst": [
+        "192.168.20.14"
+      ],
+      "ports": [
+        4444
+      ],
+      "proto": "TCP",
+      "rule": 1036
+    },
+    {
+      "src": [
+        "10.20.0.7"
+      ],
+      "dst": [
+        "192.168.15.9"
+      ],
+      "ports": [
+        5380
+      ],
+      "proto": "TCP",
+      "rule": 1040
+    },
+    {
+      "src": [
+        "10.20.0.7"
+      ],
+      "dst": [
+        "192.168.15.10",
+        "192.168.15.11"
+      ],
+      "ports": [
+        9090
+      ],
+      "proto": "TCP",
+      "rule": "1041-1042"
+    },
+    {
+      "src": [
+        "10.20.0.7"
+      ],
+      "dst": [
+        "192.168.99.2"
+      ],
+      "ports": [
+        8006
+      ],
+      "proto": "TCP",
+      "rule": 1043
+    },
+    {
+      "src": [
+        "10.20.0.7"
+      ],
+      "dst": [
+        "192.168.5.5"
+      ],
+      "ports": [
+        8080
+      ],
+      "proto": "TCP",
+      "rule": 1044
+    },
+    {
+      "src": [
+        "10.20.0.7"
+      ],
+      "dst": [
+        "192.168.5.1"
+      ],
+      "ports": [
+        80
+      ],
+      "proto": "TCP",
+      "rule": 1045
+    },
+    {
+      "src": [
+        "10.20.0.9",
+        "10.20.0.13",
+        "10.20.0.14"
+      ],
+      "dst": [
+        "192.168.5.12"
+      ],
+      "ports": [
+        1514,
+        1515
+      ],
+      "proto": "TCP",
+      "rule": 1050
+    },
+    {
+      "src": [
+        "10.20.0.9",
+        "10.20.0.13",
+        "10.20.0.14"
+      ],
+      "dst": [
+        "192.168.99.11"
+      ],
+      "ports": [
+        514
+      ],
+      "proto": "UDP",
+      "rule": 1051
+    },
+    {
+      "src": [
+        "10.20.0.9"
+      ],
+      "dst": [
+        "192.168.20.6",
+        "192.168.20.7"
+      ],
+      "ports": [
+        53
+      ],
+      "proto": "ANY",
+      "rule": 1055
+    }
+  ],
+  "thresholds": {
+    "zscore": 4.0,
+    "zscore_min_samples": 7,
+    "volume_min_count": 50,
+    "login_fail_burst": 5,
+    "login_fail_window_min": 10,
+    "fanout_distinct_dsts": 10,
+    "beacon_min_conns": 10,
+    "beacon_min_span_min": 60,
+    "beacon_max_interval_cv": 0.15,
+    "beacon_max_bytes_cv": 0.35,
+    "login_hour_min_baseline": 5
+  },
+  "resolver_share": {
+    "_doc": "Round-robin balance for VLANs 20/25/30 (RB5009 'RR DNS split' rules). 'since' = when the split went live; windows before it are ignored. Learned per hour-of-day during the burn-in.",
+    "since": "2026-11-23T10:47:00-06:00",
+    "servers": [
+      "primenodetls",
+      "buauth"
+    ],
+    "addresses": {
+      "primenodetls": "192.168.15.9",
+      "buauth": "10.20.0.9"
+    },
+    "window_min": 15,
+    "min_queries": 100,
+    "zscore": 4.0,
+    "outage_low": 0.15,
+    "outage_high": 0.85,
+    "exclude": [
+      "192.168.25.5/32",
+      "192.168.5.0/28",
+      "192.168.15.0/28",
+      "192.168.99.0/28",
+      "172.16.255.0/30",
+      "fd12:3456:789a:5::/64",
+      "fd12:3456:789a:15::/64",
+      "fd12:3456:789a:99::/64",
+      "2001:db8:4a00:1f84::/64",
+      "2001:db8:4a00:1f85::/64",
+      "2001:db8:4a00:1f86::/64"
+    ]
+  }
+}

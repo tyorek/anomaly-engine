@@ -1,0 +1,170 @@
+<!-- Anomaly engine findings (P9), added 2026-11-23.
+     Source: /home/agent/agents/anomaly-engine/findings.jsonl on the agent box (agent claude_agents), one JSON object per line
+     {"anomaly_engine": {detector, severity, attack, entity, summary, evidence, event_time, mode}}.
+     Levels are per detector; the engine writes nothing here during the burn-in (until 2026-12-07). -->
+<group name="anomaly_engine,">
+  <rule id="100600" level="0">
+    <decoded_as>json</decoded_as>
+    <field name="anomaly_engine.detector">\.+</field>
+    <description>Anomaly engine finding (base)</description>
+  </rule>
+
+  <rule id="100601" level="10">
+    <if_sid>100600</if_sid>
+    <field name="anomaly_engine.detector">^dmz_internal_connection$</field>
+    <description>Anomaly engine: $(anomaly_engine.summary)</description>
+    <mitre><id>T1021</id></mitre>
+    <group>dmz,lateral_movement,</group>
+  </rule>
+
+  <rule id="100602" level="12">
+    <if_sid>100600</if_sid>
+    <field name="anomaly_engine.detector">^dmz_proxy_internal_connection$</field>
+    <description>Anomaly engine: $(anomaly_engine.summary)</description>
+    <mitre><id>T1021</id><id>T1210</id></mitre>
+    <group>dmz,lateral_movement,</group>
+  </rule>
+
+  <rule id="100603" level="10">
+    <if_sid>100600</if_sid>
+    <field name="anomaly_engine.detector">^dmz_firewall_block$</field>
+    <description>Anomaly engine: $(anomaly_engine.summary)</description>
+    <mitre><id>T1046</id></mitre>
+    <group>dmz,discovery,</group>
+  </rule>
+
+  <rule id="100604" level="11">
+    <if_sid>100600</if_sid>
+    <field name="anomaly_engine.detector">^dmz_internal_fanout$</field>
+    <description>Anomaly engine: $(anomaly_engine.summary)</description>
+    <mitre><id>T1046</id></mitre>
+    <group>dmz,discovery,</group>
+  </rule>
+
+  <rule id="100605" level="8">
+    <if_sid>100600</if_sid>
+    <field name="anomaly_engine.detector">^first_seen_outbound_tls$</field>
+    <description>Anomaly engine: $(anomaly_engine.summary)</description>
+    <mitre><id>T1071.001</id></mitre>
+    <group>first_seen,command_and_control,</group>
+  </rule>
+
+  <rule id="100606" level="7">
+    <if_sid>100600</if_sid>
+    <field name="anomaly_engine.detector">^first_seen_dns_domain$</field>
+    <description>Anomaly engine: $(anomaly_engine.summary)</description>
+    <mitre><id>T1071.004</id></mitre>
+    <group>first_seen,command_and_control,</group>
+  </rule>
+
+  <rule id="100607" level="8">
+    <if_sid>100600</if_sid>
+    <field name="anomaly_engine.detector">^first_seen_outbound_port$</field>
+    <description>Anomaly engine: $(anomaly_engine.summary)</description>
+    <mitre><id>T1571</id></mitre>
+    <group>first_seen,command_and_control,</group>
+  </rule>
+
+  <rule id="100608" level="10">
+    <if_sid>100600</if_sid>
+    <field name="anomaly_engine.detector">^first_seen_inbound_service$</field>
+    <description>Anomaly engine: $(anomaly_engine.summary)</description>
+    <mitre><id>T1190</id></mitre>
+    <group>first_seen,initial_access,</group>
+  </rule>
+
+  <rule id="100609" level="6">
+    <if_sid>100600</if_sid>
+    <field name="anomaly_engine.detector">^first_seen_mac$</field>
+    <description>Anomaly engine: $(anomaly_engine.summary)</description>
+    <mitre><id>T1200</id></mitre>
+    <group>first_seen,initial_access,</group>
+  </rule>
+
+  <rule id="100610" level="8">
+    <if_sid>100600</if_sid>
+    <field name="anomaly_engine.detector">^first_seen_login$</field>
+    <description>Anomaly engine: $(anomaly_engine.summary)</description>
+    <mitre><id>T1078</id></mitre>
+    <group>first_seen,authentication,</group>
+  </rule>
+
+  <rule id="100611" level="8">
+    <if_sid>100600</if_sid>
+    <field name="anomaly_engine.detector">^login_odd_hour$</field>
+    <description>Anomaly engine: $(anomaly_engine.summary)</description>
+    <mitre><id>T1078</id></mitre>
+    <group>authentication,</group>
+  </rule>
+
+  <rule id="100612" level="10">
+    <if_sid>100600</if_sid>
+    <field name="anomaly_engine.detector">^login_failure_burst$</field>
+    <description>Anomaly engine: $(anomaly_engine.summary)</description>
+    <mitre><id>T1110</id></mitre>
+    <group>authentication,credential_access,</group>
+  </rule>
+
+  <rule id="100613" level="9">
+    <if_sid>100600</if_sid>
+    <field name="anomaly_engine.detector">^config_actor_first_seen$</field>
+    <description>Anomaly engine: $(anomaly_engine.summary)</description>
+    <mitre><id>T1098</id></mitre>
+    <group>first_seen,persistence,</group>
+  </rule>
+
+  <rule id="100614" level="6">
+    <if_sid>100600</if_sid>
+    <field name="anomaly_engine.detector">^volume_spike$</field>
+    <description>Anomaly engine: $(anomaly_engine.summary)</description>
+    <group>volume,</group>
+  </rule>
+
+  <rule id="100615" level="10">
+    <if_sid>100600</if_sid>
+    <field name="anomaly_engine.detector">^dmz_bytes_out_spike$</field>
+    <description>Anomaly engine: $(anomaly_engine.summary)</description>
+    <mitre><id>T1041</id><id>T1048</id></mitre>
+    <group>dmz,exfiltration,</group>
+  </rule>
+
+  <rule id="100616" level="9">
+    <if_sid>100600</if_sid>
+    <field name="anomaly_engine.detector">^beacon_candidate$</field>
+    <description>Anomaly engine: $(anomaly_engine.summary)</description>
+    <mitre><id>T1071</id><id>T1573</id></mitre>
+    <group>command_and_control,</group>
+  </rule>
+
+  <rule id="100617" level="10">
+    <if_sid>100600</if_sid>
+    <field name="anomaly_engine.detector">^feed_silent$</field>
+    <description>Anomaly engine: $(anomaly_engine.summary)</description>
+    <mitre><id>T1562</id></mitre>
+    <group>defense_evasion,</group>
+  </rule>
+
+  <rule id="100618" level="12">
+    <if_sid>100600</if_sid>
+    <field name="anomaly_engine.detector">^monitoring_host_egress$</field>
+    <description>Anomaly engine: $(anomaly_engine.summary)</description>
+    <mitre><id>T1071</id></mitre>
+    <group>monitoring,command_and_control,</group>
+  </rule>
+
+  <rule id="100619" level="7">
+    <if_sid>100600</if_sid>
+    <field name="anomaly_engine.detector">^engine_status$</field>
+    <description>Anomaly engine: $(anomaly_engine.summary)</description>
+    <group>engine,</group>
+  </rule>
+
+  <rule id="100620" level="9">
+    <if_sid>100600</if_sid>
+    <field name="anomaly_engine.detector">^resolver_share_imbalance$</field>
+    <description>Anomaly engine: $(anomaly_engine.summary)</description>
+    <mitre><id>T1562</id><id>T1071.004</id></mitre>
+    <group>dns,defense_evasion,</group>
+  </rule>
+
+</group>

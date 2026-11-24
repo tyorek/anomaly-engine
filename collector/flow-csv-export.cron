@@ -1,0 +1,2 @@
+# Export each closed 5-minute nfcapd file to CSV for the anomaly engine (one minute after rotation)
+1-59/5 * * * * root /usr/local/bin/flow-csv-export
